@@ -13,6 +13,10 @@ A comprehensive full-stack web application for managing raffle events with role-
 - [Project Structure](#project-structure)
 - [Contributing](#contributing)
 
+For detailed information about each component:
+- See [client/README.md](client/README.md) for frontend documentation
+- See [server/README.md](server/README.md) for backend documentation
+
 ## Overview
 
 The Raffle Management System is designed to streamline the process of organizing and managing raffle events. It provides a modern, intuitive interface for users to browse available gifts, manage their shopping cart, and participate in raffles, while giving administrators and donors powerful tools to manage the entire raffle lifecycle.
@@ -73,7 +77,6 @@ The application follows a modern three-tier architecture:
 - **Framework**: Angular 20.3
 - **UI Libraries**: 
   - PrimeNG 20.4 (Primary component library)
-  - ng-zorro-antd 20.4 (Additional UI components)
 - **Language**: TypeScript
 - **Styling**: SCSS
 - **Additional Libraries**: 
@@ -98,7 +101,6 @@ The application follows a modern three-tier architecture:
 ### Database
 
 - **DBMS**: SQL Server
-- **Development Environment**: Docker container (recommended)
 - **Migration Tool**: Entity Framework Core Migrations
 
 ## Prerequisites
@@ -110,7 +112,7 @@ Before running this project, ensure you have the following installed:
 - **Angular CLI**: 20.3.13 or higher
 - **.NET SDK**: 8.0 or higher
 - **SQL Server**: Local instance, Docker container, or remote server
-- **Docker** (optional, recommended): For running SQL Server in a container
+
 
 ### Verify Installation
 
@@ -141,13 +143,8 @@ cd finalProject
 
 ### 2. Set Up the Database
 
-#### Option A: Using Docker (Recommended)
 
-```bash
-docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=YourStrong@Pass123" -p 1433:1433 --name sql-server -d mcr.microsoft.com/mssql/server:2022-latest
-```
-
-#### Option B: Using Local SQL Server
+#### Using Local SQL Server
 
 Ensure SQL Server is running on your machine and accessible.
 
@@ -244,20 +241,5 @@ finalProject/
 └── README.md           # This file
 ```
 
-For detailed information about each component:
-- See [client/README.md](client/README.md) for frontend documentation
-- See [server/README.md](server/README.md) for backend documentation
 
-## Contributing
 
-When contributing to this project:
-
-1. Follow the existing code style and conventions
-2. Write meaningful commit messages
-3. Test your changes thoroughly before submitting
-4. Update documentation when adding new features
-5. Ensure all tests pass before pushing changes
-
-## License
-
-This project is developed as part of an academic/educational project.
