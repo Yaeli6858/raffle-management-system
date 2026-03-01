@@ -19,6 +19,31 @@ This plan transforms the monolithic Chinese Auction application into a microserv
 5. **Notification Service** - Email notifications for winners and donors
 6. **API Gateway** - Single entry point, routing, authentication validation
 
+### Service Data Store Decisions
+For each microservice we recommend a primary data store choice. These are suggestions based on typical patterns; adjust to your operational constraints.
+
+- Auth Service: Relational (PostgreSQL / SQL Server)
+   - Rationale: User data and roles are relational and require ACID guarantees for updates (role changes, user management). Relational DBs simplify queries for user lookups and joins.
+
+- Catalog (Gift) Service: Relational (PostgreSQL / SQL Server)
+   - Rationale: Catalog entities (gifts, categories, donors) are structured and often require joins, filtering, and transactional updates. Use relational DB for data integrity and complex queries. Consider a read-optimized replica or materialized views for public reads.
+
+- Purchase Service: Relational (PostgreSQL / SQL Server)
+   - Rationale: Purchases, cart items, and transactions benefit from ACID semantics. Denormalize gift snapshot fields into purchases for historical accuracy. Relational DB facilitates reporting and joins for order history.
+
+- Raffle Service: Relational (PostgreSQL / SQL Server) + Redis for state
+   - Rationale: Winning records and raffle history should be stored relationally. Raffle runtime state (Open/Finished) is ephemeral and should be stored in Redis for fast access and pub/sub notifications.
+
+- Notification Service: Non-relational / Message-driven (no dedicated DB) or lightweight store
+   - Rationale: Notifications are event-driven; durable queue (RabbitMQ) and optional lightweight store (NoSQL like MongoDB) for history/archive. Many implementations don't require a primary DB; use message queues and object storage for attachments.
+
+- API Gateway: No DB (stateless) or lightweight config store
+   - Rationale: Gateway should be stateless. Use configuration management (consul/etcd) or DB only if you need dynamic routing stored centrally.
+
+- Read-models / Materialized Views (optional): Non-relational (Elasticsearch / MongoDB / Redis) for fast queries and dashboards
+   - Rationale: For donor dashboards and analytic queries, maintain denormalized read models in a NoSQL store or search index optimized for the query patterns.
+
+
 ### Communication Patterns
 - **Synchronous**: HTTP/REST via API Gateway for user-facing operations
 - **Asynchronous**: RabbitMQ for events (WinnerSelected, PurchaseCompleted, RaffleExecuted)
