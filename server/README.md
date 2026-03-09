@@ -8,7 +8,7 @@ The backend REST API for the Raffle Management System, built with ASP.NET Core 8
 - [Technologies Used](#technologies-used)
 - [Getting Started](#getting-started)
 - [Project Structure](#project-structure)
-- [API Overview](#api-overview)
+- [API Endpoints](#api-endpoints)
 - [Database](#database)
 - [Authentication & Authorization](#authentication--authorization)
 - [Logging](#logging)
@@ -48,6 +48,11 @@ The API is built using a clean architecture approach with separation of concerns
 - **JWT Bearer Authentication**: `Microsoft.AspNetCore.Authentication.JwtBearer` (used for issuing and validating JWT tokens)
 - **Password hashing**: `BCrypt.Net-Next` (used for secure password hashing)
 
+### Additional Libraries
+
+- **AutoMapper** — object-to-object mapping between models and DTOs
+- **Serilog** — structured logging to console and file
+- **Swagger / OpenAPI** — auto-generated API documentation and testing UI
 
 ---
 
@@ -130,11 +135,16 @@ dotnet ef database update
 dotnet run
 ```
 
-The API will listen on the configured ports (check `launchSettings.json`).
+The API will be available at:
+- HTTP: `http://localhost:5071`
+- HTTPS: `https://localhost:7033`
 
 ## 5. API Documentation
-Open the Swagger UI (e.g., `http://localhost:5000/swagger`) to explore endpoints.
+Open the Swagger UI to explore and test all endpoints:
 
+```
+http://localhost:5071/swagger
+```
 ---
 
 
@@ -154,22 +164,22 @@ server/
 │   └── WinningController.cs # Raffle draw and winners
 │
 ├── Models/                   # Domain models (entities)
-│   ├── UserModel.cs         # User entity
-│   ├── GiftModel.cs         # Gift entity
-│   ├── CategoryModel.cs     # Category entity
-│   ├── PurchaseModel.cs     # Purchase entity
-│   ├── WinningModel.cs      # Winning entity
+│   ├── UserModel.cs  
+│   ├── GiftModel.cs   
+│   ├── CategoryModel.cs
+│   ├── PurchaseModel.cs     
+│   ├── WinningModel.cs      
 │   └── enum/               # Enumerations
 │
 ├── DTOs/                     # Data Transfer Objects
-│   ├── AuthDto.cs           # Authentication DTOs
-│   ├── CartDto.cs           # Cart DTOs
-│   ├── CategoryDto.cs       # Category DTOs
-│   ├── DonorDto.cs          # Donor DTOs
-│   ├── GiftDto.cs           # Gift DTOs
-│   ├── PurchaseDto.cs       # Purchase DTOs
-│   ├── UserDto.cs           # User DTOs
-│   └── WinningDto.cs        # Winning DTOs
+│   ├── AuthDto.cs         
+│   ├── CartDto.cs           
+│   ├── CategoryDto.cs     
+│   ├── DonorDto.cs       
+│   ├── GiftDto.cs         
+│   ├── PurchaseDto.cs      
+│   ├── UserDto.cs          
+│   └── WinningDto.cs       
 │
 ├── Services/                 # Business logic layer
 │   ├── Interfaces/          # Service interfaces
@@ -208,9 +218,11 @@ server/
 ---
 
 
-## API Overview
+## API Endpoints
 
 The API follows RESTful conventions and is organized into the following resource groups:
+
+> Full documentation with request/response schemas is available via Swagger UI at `/swagger`.
 
 ## Authentication
 
@@ -325,10 +337,6 @@ The API follows RESTful conventions and is organized into the following resource
 | Endpoint | Description |
 |----------|-------------|
 | `POST /api/email/send-mail?giftId=&winnerId=` | Sends a winning email to both the winner and the donor with gift and raffle details — Admin only |
-
-
-**Note**: Detailed API documentation with request/response schemas is available via Swagger UI at `/swagger`.
-
 
 ---
 
