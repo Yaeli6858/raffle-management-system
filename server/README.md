@@ -8,11 +8,13 @@ The backend REST API for the Raffle Management System, built with ASP.NET Core 8
 - [Technologies Used](#technologies-used)
 - [Getting Started](#getting-started)
 - [Project Structure](#project-structure)
-- [API Overview](#api-overview)
+- [API Endpoints](#api-endpoints)
 - [Database](#database)
 - [Authentication & Authorization](#authentication--authorization)
 - [Logging](#logging)
 - [Testing](#testing)
+
+---
 
 ## Overview
 
@@ -24,6 +26,8 @@ The API is built using a clean architecture approach with separation of concerns
 - **Repositories** manage data access
 - **DTOs** define data transfer objects for API contracts
 - **Middlewares** handle cross-cutting concerns
+
+---
 
 ## Technologies Used
 
@@ -44,6 +48,13 @@ The API is built using a clean architecture approach with separation of concerns
 - **JWT Bearer Authentication**: `Microsoft.AspNetCore.Authentication.JwtBearer` (used for issuing and validating JWT tokens)
 - **Password hashing**: `BCrypt.Net-Next` (used for secure password hashing)
 
+### Additional Libraries
+
+- **AutoMapper** — object-to-object mapping between models and DTOs
+- **Serilog** — structured logging to console and file
+- **Swagger / OpenAPI** — auto-generated API documentation and testing UI
+
+---
 
 
 ## Getting Started
@@ -124,10 +135,17 @@ dotnet ef database update
 dotnet run
 ```
 
-The API will listen on the configured ports (check `launchSettings.json`).
+The API will be available at:
+- HTTP: `http://localhost:5071`
+- HTTPS: `https://localhost:7033`
 
 ## 5. API Documentation
-Open the Swagger UI (e.g., `http://localhost:5000/swagger`) to explore endpoints.
+Open the Swagger UI to explore and test all endpoints:
+
+```
+http://localhost:5071/swagger
+```
+---
 
 
 ## Project Structure
@@ -146,22 +164,22 @@ server/
 │   └── WinningController.cs # Raffle draw and winners
 │
 ├── Models/                   # Domain models (entities)
-│   ├── UserModel.cs         # User entity
-│   ├── GiftModel.cs         # Gift entity
-│   ├── CategoryModel.cs     # Category entity
-│   ├── PurchaseModel.cs     # Purchase entity
-│   ├── WinningModel.cs      # Winning entity
+│   ├── UserModel.cs  
+│   ├── GiftModel.cs   
+│   ├── CategoryModel.cs
+│   ├── PurchaseModel.cs     
+│   ├── WinningModel.cs      
 │   └── enum/               # Enumerations
 │
 ├── DTOs/                     # Data Transfer Objects
-│   ├── AuthDto.cs           # Authentication DTOs
-│   ├── CartDto.cs           # Cart DTOs
-│   ├── CategoryDto.cs       # Category DTOs
-│   ├── DonorDto.cs          # Donor DTOs
-│   ├── GiftDto.cs           # Gift DTOs
-│   ├── PurchaseDto.cs       # Purchase DTOs
-│   ├── UserDto.cs           # User DTOs
-│   └── WinningDto.cs        # Winning DTOs
+│   ├── AuthDto.cs         
+│   ├── CartDto.cs           
+│   ├── CategoryDto.cs     
+│   ├── DonorDto.cs       
+│   ├── GiftDto.cs         
+│   ├── PurchaseDto.cs      
+│   ├── UserDto.cs          
+│   └── WinningDto.cs       
 │
 ├── Services/                 # Business logic layer
 │   ├── Interfaces/          # Service interfaces
@@ -197,70 +215,130 @@ server/
 ```
 
 
+---
 
-## API Overview
+
+## API Endpoints
 
 The API follows RESTful conventions and is organized into the following resource groups:
 
-### Authentication
+> Full documentation with request/response schemas is available via Swagger UI at `/swagger`.
 
-- `POST /api/auth/login` - User login with email and password
+## Authentication
 
-### Users
+| Endpoint | Description |
+|----------|-------------|
+| `POST /api/auth/login` | Authenticates a user by email and password, returns a JWT token and user details |
+| `POST /api/auth/register` | Creates a new user with Role=User, returns a JWT token and user details |
 
-- `GET /api/user` - Get all users (Admin only)
-- `GET /api/user/{id}` - Get user by ID
-- `POST /api/user` - Create new user (registration)
-- `PUT /api/user/{id}` - Update user
-- `DELETE /api/user/{id}` - Delete user (Admin only)
 
-### Gifts
 
-- `GET /api/gift` - Get all gifts with optional filters (sort, category, donor)
-- `GET /api/gift/{id}` - Get gift by ID
-- `POST /api/gift` - Create new gift (Admin/Donor)
-- `PUT /api/gift/{id}` - Update gift
-- `DELETE /api/gift/{id}` - Delete gift
+## Users
 
-### Categories
+| Endpoint | Description |
+|----------|-------------|
+| `GET /api/user` | Returns all users in the system — Admin only |
+| `GET /api/user/{id}` | Returns a user by ID |
+| `POST /api/user` | Creates a new user |
+| `PUT /api/user/{id}` | Updates user details (name, email, phone, city, address, password, role) |
+| `DELETE /api/user/{id}` | Deletes a user — Admin only |
 
-- `GET /api/category` - Get all categories
-- `GET /api/category/{id}` - Get category by ID
-- `POST /api/category` - Create category (Admin)
-- `PUT /api/category/{id}` - Update category (Admin)
-- `DELETE /api/category/{id}` - Delete category (Admin)
 
-### Cart
 
-- `GET /api/cart/{userId}` - Get user's cart
-- `POST /api/cart` - Add item to cart
-- `PUT /api/cart/{id}` - Update cart item
-- `DELETE /api/cart/{id}` - Remove item from cart
+## Gifts
 
-### Purchases
+| Endpoint | Description |
+|----------|-------------|
+| `GET /api/gift` | Returns all gifts with optional filtering via `?sort=`, `?categoryId=`, `?donorId=` |
+| `GET /api/gift/all` | Returns all gifts with price sorting only |
+| `GET /api/gift/{id}` | Returns a gift by ID |
+| `GET /api/gift/byCategory/{categoryId}` | Returns all gifts belonging to a specific category |
+| `GET /api/gift/byDonor/{donorId}` | Returns all gifts donated by a specific donor |
+| `GET /api/gift/purchaseCount` | Returns the number of tickets purchased per gift |
+| `POST /api/gift` | Creates a new gift with an image (multipart/form-data) — Admin only |
+| `PUT /api/gift/{id}` | Updates an existing gift, including optional image replacement — Admin only |
+| `DELETE /api/gift/{id}` | Deletes a gift — fails if associated purchases exist — Admin only |
 
-- `GET /api/purchase` - Get all purchases
-- `GET /api/purchase/{id}` - Get purchase by ID
-- `POST /api/purchase` - Create purchase
-- `POST /api/purchase/complete` - Complete purchase (checkout)
 
-### Winnings
 
-- `GET /api/winning` - Get all winnings
-- `GET /api/winning/{id}` - Get winning by ID
-- `POST /api/winning/draw` - Execute raffle draw (Admin)
+## Categories
 
-### Email
+| Endpoint | Description |
+|----------|-------------|
+| `GET /api/category` | Returns all categories |
+| `GET /api/category/{id}` | Returns a category by ID |
+| `POST /api/category` | Creates a new category — Admin only |
+| `PUT /api/category/{id}` | Updates a category name — Admin only |
+| `DELETE /api/category/{id}` | Deletes a category — fails if associated gifts exist — Admin only |
 
-- `POST /api/email/send` - Send email notification
 
-### Donors
 
-- `GET /api/donor` - Get all donors
-- Additional donor-specific endpoints
+## Cart
 
-**Note**: Detailed API documentation with request/response schemas is available via Swagger UI at `/swagger`.
+| Endpoint | Description |
+|----------|-------------|
+| `GET /api/cart/cart` | Returns the current user's cart (purchases with Draft status) |
+| `POST /api/cart` | Adds a gift to the cart with a specified quantity — blocked if raffle has ended |
+| `PUT /api/cart` | Updates the quantity of a cart item — creates a new item if it doesn't exist |
+| `DELETE /api/cart/{purchaseId}` | Removes an item from the cart — only allowed if status is Draft |
+| `POST /api/cart/checkout` | Converts all cart items from Draft to Completed |
 
+
+
+## Purchases
+
+| Endpoint | Description |
+|----------|-------------|
+| `GET /api/purchase` | Returns all purchases in the system — Admin only |
+| `GET /api/purchase/{id}` | Returns a purchase by ID |
+| `GET /api/purchase/byGift/{giftId}` | Returns all purchases for a specific gift — Admin only |
+| `GET /api/purchase/count-by-gift` | Returns purchase count statistics grouped by gift — Admin only |
+| `POST /api/purchase` | Creates a new purchase for the authenticated user |
+| `PUT /api/purchase` | Updates the quantity and/or status of a purchase |
+| `DELETE /api/purchase/{id}` | Deletes a purchase by ID |
+
+
+
+## Winnings
+
+| Endpoint | Description |
+|----------|-------------|
+| `GET /api/winning` | Returns all winnings — Admin only |
+| `GET /api/winning/{id}` | Returns a winning entry by ID — Admin only |
+| `GET /api/winning/doRaffle` | Runs a full raffle for all gifts without a winner, sends emails to winners and donors, and marks the raffle as closed — Admin only |
+| `GET /api/winning/raffle-single/{giftId}` | Runs a raffle for a single gift and sends an email to the winner and donor — Admin only |
+| `GET /api/winning/total-income` | Calculates the total income from all Completed purchases — Admin only |
+| `GET /api/winning/statusIsFinished` | Returns whether the raffle has ended (true/false) — Admin only |
+| `GET /api/winning/sorted-by-most-purchased` | Returns winnings sorted by the most purchased gift |
+| `GET /api/winning/search` | Searches winnings by `?giftName=`, `?donorName=`, `?minPurchases=` |
+| `POST /api/winning` | Manually adds a winning entry by GiftId and WinnerId — Admin only |
+| `POST /api/winning/finishRaffle` | Marks the raffle as closed (blocks new cart additions) — Admin only |
+| `POST /api/winning/resetStatus` | Resets the raffle status to Open — Admin only |
+| `PUT /api/winning/{id}` | Updates an existing winning entry — Admin only |
+| `DELETE /api/winning/{id}` | Deletes a winning entry — Admin only |
+
+
+
+## Donors
+
+| Endpoint | Description |
+|----------|-------------|
+| `GET /api/donor` | Returns all donors with optional filtering via `?search=` (name/email/phone) and `?city=` — Admin only |
+| `GET /api/donor/with-gifts` | Returns all donors along with their donated gifts — Admin only |
+| `GET /api/donor/dashboard` | Returns a dashboard for the authenticated donor: gift count, tickets sold, unique buyers, and winning status per gift — Donor only |
+| `GET /api/donor/details` | Returns the profile details of the authenticated donor — Donor only |
+| `POST /api/donor` | Creates a new donor with an encrypted password and Role=Donor — Admin only |
+| `PATCH /api/donor/role/{userId}` | Changes the role of a specific user — Admin only |
+
+
+
+## Email
+
+| Endpoint | Description |
+|----------|-------------|
+| `POST /api/email/send-mail?giftId=&winnerId=` | Sends a winning email to both the winner and the donor with gift and raffle details — Admin only |
+
+---
 
 
 ## Database
@@ -280,6 +358,8 @@ The database includes the following main entities:
 
 A SQL script with sample data is available at [`documents/script.sql`](documents/script.sql).  
 You can run it after applying the EF Core migrations to populate the database with initial data.
+
+---
 
 ## Authentication & Authorization
 
@@ -312,6 +392,8 @@ Endpoints are protected using the `[Authorize]` attribute with role-based polici
 public async Task<ActionResult> Delete(int id)
 ```
 
+---
+
 ## Logging
 
 The application uses **Serilog** for structured logging.
@@ -340,6 +422,8 @@ All HTTP requests are automatically logged with:
 - HTTP method and path
 - Response status code
 - Duration
+
+---
 
 ## Testing
 

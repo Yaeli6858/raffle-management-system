@@ -1,4 +1,3 @@
-![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)
 ![Angular](https://img.shields.io/badge/Angular-20-DD0031?style=flat&logo=angular&logoColor=white)
 ![.NET](https://img.shields.io/badge/.NET-8.0-512BD4?style=flat&logo=dotnet&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)
@@ -8,6 +7,8 @@
 ![JWT](https://img.shields.io/badge/JWT-Auth-black?style=flat&logo=jsonwebtokens)
 ![Serilog](https://img.shields.io/badge/Serilog-Logging-blue?style=flat)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)
+
 
 
 
