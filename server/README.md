@@ -219,7 +219,7 @@ The API follows RESTful conventions and is organized into the following resource
 | `POST /api/auth/login` | Authenticates a user by email and password, returns a JWT token and user details |
 | `POST /api/auth/register` | Creates a new user with Role=User, returns a JWT token and user details |
 
----
+
 
 ## Users
 
@@ -231,7 +231,7 @@ The API follows RESTful conventions and is organized into the following resource
 | `PUT /api/user/{id}` | Updates user details (name, email, phone, city, address, password, role) |
 | `DELETE /api/user/{id}` | Deletes a user — Admin only |
 
----
+
 
 ## Gifts
 
@@ -247,7 +247,7 @@ The API follows RESTful conventions and is organized into the following resource
 | `PUT /api/gift/{id}` | Updates an existing gift, including optional image replacement — Admin only |
 | `DELETE /api/gift/{id}` | Deletes a gift — fails if associated purchases exist — Admin only |
 
----
+
 
 ## Categories
 
@@ -259,7 +259,7 @@ The API follows RESTful conventions and is organized into the following resource
 | `PUT /api/category/{id}` | Updates a category name — Admin only |
 | `DELETE /api/category/{id}` | Deletes a category — fails if associated gifts exist — Admin only |
 
----
+
 
 ## Cart
 
@@ -271,7 +271,7 @@ The API follows RESTful conventions and is organized into the following resource
 | `DELETE /api/cart/{purchaseId}` | Removes an item from the cart — only allowed if status is Draft |
 | `POST /api/cart/checkout` | Converts all cart items from Draft to Completed |
 
----
+
 
 ## Purchases
 
@@ -285,7 +285,7 @@ The API follows RESTful conventions and is organized into the following resource
 | `PUT /api/purchase` | Updates the quantity and/or status of a purchase |
 | `DELETE /api/purchase/{id}` | Deletes a purchase by ID |
 
----
+
 
 ## Winnings
 
@@ -305,7 +305,7 @@ The API follows RESTful conventions and is organized into the following resource
 | `PUT /api/winning/{id}` | Updates an existing winning entry — Admin only |
 | `DELETE /api/winning/{id}` | Deletes a winning entry — Admin only |
 
----
+
 
 ## Donors
 
@@ -318,7 +318,7 @@ The API follows RESTful conventions and is organized into the following resource
 | `POST /api/donor` | Creates a new donor with an encrypted password and Role=Donor — Admin only |
 | `PATCH /api/donor/role/{userId}` | Changes the role of a specific user — Admin only |
 
----
+
 
 ## Email
 
