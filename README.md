@@ -15,6 +15,8 @@
 
 A comprehensive full-stack web application for managing raffle events with role-based access control. The system enables administrators to manage gifts and draw winners, donors to contribute gifts, and users to participate in raffles by purchasing tickets.
 
+<img src="./client/screenshots/גיף כל האתר.gif" width="900" />
+
 
 ## Table of Contents
 
