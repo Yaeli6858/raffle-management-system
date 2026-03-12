@@ -149,8 +149,6 @@ client/
 This section showcases the user interface of the Raffle Management System.
 
 ### Home Page
-
-<!-- ![Home_page](./screenshots/home_page.png) -->
 <img src="./screenshots/home_page.png" width="660" />
 
 

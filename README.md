@@ -2,16 +2,20 @@
 ![.NET](https://img.shields.io/badge/.NET-8.0-512BD4?style=flat&logo=dotnet&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)
 ![C#](https://img.shields.io/badge/C%23-239120?style=flat&logo=csharp&logoColor=white)
+![EF Core](https://img.shields.io/badge/EF%20Core-8.0-512BD4?style=flat&logo=dotnet&logoColor=white)
 ![SQL Server](https://img.shields.io/badge/SQL%20Server-CC2927?style=flat&logo=microsoftsqlserver&logoColor=white)
 ![JWT](https://img.shields.io/badge/JWT-Auth-black?style=flat&logo=jsonwebtokens)
+![Serilog](https://img.shields.io/badge/Serilog-Logging-blue?style=flat)
 ![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)
-![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+
 
 
 
 # Raffle Management System
-
+bbbb
 A comprehensive full-stack web application for managing raffle events with role-based access control. The system enables administrators to manage gifts and draw winners, donors to contribute gifts, and users to participate in raffles by purchasing tickets.
+
+<img src="./client/screenshots/גיף כל האתר.gif" width="900" />
 
 
 ## Table of Contents
@@ -34,9 +38,11 @@ The Raffle Management System is designed to streamline the process of organizing
 
 ### User Roles
 
-- **Administrator**: Manages the entire system, including users, gifts, categories, and raffle draws
-- **Donor**: Contributes gifts to the raffle system
-- **User**: Browses gifts, purchases raffle tickets, and participates in raffles
+| Role | Description |
+|------|-------------|
+| **Administrator** | Manages the entire system, including users, gifts, categories, and raffle draws |
+| **Donor** | Has view-only access to see data and statistics regarding the gifts they have donated |
+| **User** | Browses gifts, purchases raffle tickets, and participates in raffles |
 
 ## Features
 
