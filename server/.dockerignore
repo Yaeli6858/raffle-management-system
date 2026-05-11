@@ -1,0 +1,15 @@
+bin/
+obj/
+Logs/
+**/bin/
+**/obj/
+**/*.user
+**/*.suo
+**/*.userosscache
+**/*.vs
+*.vs
+.vscode
+*.log
+**/*.log
+**/*.nupkg
+**/node_modules
