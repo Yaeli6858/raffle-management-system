@@ -81,7 +81,12 @@ builder.Services.AddSwaggerGen(c =>
 
 // Database
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+    sqlServerOptionsAction: sqlOptions =>
+    {
+        sqlOptions.EnableRetryOnFailure();
+    }));
+
 
 // Redis distributed cache
 builder.Services.AddStackExchangeRedisCache(options =>
@@ -89,6 +94,7 @@ builder.Services.AddStackExchangeRedisCache(options =>
     options.Configuration = builder.Configuration["Redis:Configuration"];
     options.InstanceName = "RaffleApp:";
 });
+
 
 // Email
 builder.Services.Configure<EmailSettingsOptions>(
@@ -169,3 +175,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+    //  "DefaultConnection": "Server=localhost,1433;Database=RaffleDb;User Id=sa;Password=YourStrong@Pass123;TrustServerCertificate=True"

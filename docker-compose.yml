@@ -1,18 +1,65 @@
+# version: '3.9'
+
+# services:
+
+#   raffle-server:
+#     build: .
+#     extra_hosts:
+#       - "host.docker.internal:host-gateway"
+#     ...
+
+#   redis:
+#     image: redis:7.0-alpine
+#     container_name: raffle-redis
+#     command:
+#       - redis-server
+#       - --requirepass
+#       - "Devora!123"
+#     ports:
+#       - "6379:6379"
+#     volumes:
+#       - redisdata:/data
+#     restart: unless-stopped
+
+#   server:
+#     build:
+#       context: ./server
+#       dockerfile: Dockerfile
+#     container_name: raffle-server
+#     ports:
+#       - "5072:80"
+#     depends_on:
+#       - db
+#       - redis
+#     environment:
+#       ASPNETCORE_ENVIRONMENT: "Development"
+#       ASPNETCORE_URLS: "http://+:80"
+#       ConnectionStrings__DefaultConnection: "Server=db,1433;Database=RaffleDb;User Id=sa;Password=YourStrong@Pass123;TrustServerCertificate=True"
+#       Redis__Configuration: "redis:6379,password=Devora!123"
+#       Cache__GiftCacheTtlSeconds: 300
+#     restart: unless-stopped
+
+#   client:
+#     build:
+#       context: ./client
+#       dockerfile: Dockerfile
+#     container_name: raffle-client
+#     ports:
+#       - "4200:80"
+#     depends_on:
+#       - server
+#     restart: unless-stopped
+
+# volumes:
+#   sqlserverdata:
+#     name: raffle-sqlserver-data
+#   redisdata:
+#     name: raffle-redis-data
+
+
 version: '3.9'
 
 services:
-  db:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: raffle-sql-server
-    environment:
-      ACCEPT_EULA: "Y"
-      SA_PASSWORD: "YourStrong@Pass123"
-      MSSQL_PID: "Express"
-    ports:
-      - "1433:1433"
-    volumes:
-      - sqlserverdata:/var/opt/mssql
-
   redis:
     image: redis:7.0-alpine
     container_name: raffle-redis
@@ -34,12 +81,14 @@ services:
     ports:
       - "5072:80"
     depends_on:
-      - db
-      - redis
+      - redis # הסרנו את db מכאן
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # הוספנו את השורה הזו
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
       ASPNETCORE_URLS: "http://+:80"
-      ConnectionStrings__DefaultConnection: "Server=db,1433;Database=RaffleDb;User Id=sa;Password=YourStrong@Pass123;TrustServerCertificate=True"
+      # עדכנו את ה-Server כאן ל-host.docker.internal
+      ConnectionStrings__DefaultConnection: "Server=host.docker.internal,1433;Database=RaffleDb;User Id=sa;Password=Devora123!;TrustServerCertificate=True"
       Redis__Configuration: "redis:6379,password=Devora!123"
       Cache__GiftCacheTtlSeconds: 300
     restart: unless-stopped
@@ -56,7 +105,5 @@ services:
     restart: unless-stopped
 
 volumes:
-  sqlserverdata:
-    name: raffle-sqlserver-data
   redisdata:
     name: raffle-redis-data
