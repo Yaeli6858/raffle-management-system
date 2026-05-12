@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.Mvc;
 using server.DTOs;
 using server.Services.Interfaces;
@@ -8,6 +9,7 @@ namespace server.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[DisableRateLimiting]
 [Authorize]
 public class PurchaseController : ControllerBase
 {

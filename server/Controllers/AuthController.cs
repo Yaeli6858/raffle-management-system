@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.Mvc;
 using server.DTOs;
 using server.Services.Interfaces;
@@ -5,6 +6,7 @@ using server.Services.Interfaces;
 namespace server.Controllers;
 
 [ApiController]
+[DisableRateLimiting]
 [Route("api/auth")]
 public class AuthController : ControllerBase
 {

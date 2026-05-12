@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using server.DTOs;
 using server.Services.Implementations;
 using server.Services.Interfaces;
@@ -9,6 +10,7 @@ namespace server.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[DisableRateLimiting]
 [Authorize]
 public class WinningController : ControllerBase
 {

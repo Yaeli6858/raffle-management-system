@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using server.DTOs.Donors;
 using server.Models;
 using server.Services.Interfaces;
@@ -9,6 +10,7 @@ namespace server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [DisableRateLimiting]
     [Authorize]
     public class DonorController : ControllerBase
     {

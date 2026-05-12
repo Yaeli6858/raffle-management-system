@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using server.Services.Interfaces;
 
 namespace server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [DisableRateLimiting]
     public class EmailController : ControllerBase
     {
         private readonly IEmailService _emailService;

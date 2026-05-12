@@ -5,8 +5,11 @@ using server.Services.Interfaces;
 using server.Repositories.Implementations;
 using server.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Text.Json;
+using System.Threading.RateLimiting;
 using server.Services;
 using server.Middlewares;
 using server.Models;
@@ -144,6 +147,36 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddPolicy("SpecificPolicy", context =>
+    {
+        var identity = context.User?.Identity;
+        var partitionKey = identity?.IsAuthenticated == true
+            ? identity.Name ?? context.Connection.RemoteIpAddress?.ToString() ?? "anonymous"
+            : context.Connection.RemoteIpAddress?.ToString() ?? "anonymous";
+
+        return RateLimitPartition.GetSlidingWindowLimiter(partitionKey, _ => new SlidingWindowRateLimiterOptions
+        {
+            PermitLimit = 50,
+            QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+            QueueLimit = 0,
+            Window = TimeSpan.FromMinutes(5),
+            SegmentsPerWindow = 5
+        });
+    });
+
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    options.OnRejected = async (context, cancellationToken) =>
+    {
+        context.HttpContext.Response.ContentType = "application/json";
+        context.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
+
+        var payload = new { message = "Too many attempts, please try again later." };
+        await context.HttpContext.Response.WriteAsync(JsonSerializer.Serialize(payload), cancellationToken);
+    };
+});
+
 builder.Services.AddControllers();
 
 // --- Build app ---
@@ -171,8 +204,9 @@ if (app.Environment.IsDevelopment())
 app.UseGlobalExceptionHandling();
 
 app.UseAuthentication();
+app.UseRateLimiter();
 app.UseAuthorization();
-app.MapControllers();
+app.MapControllers().RequireRateLimiting("SpecificPolicy");
 
 app.Run();
 

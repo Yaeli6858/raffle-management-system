@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.Mvc;
 using server.DTOs;
 using server.Services.Interfaces;
@@ -7,6 +8,7 @@ using System.Security.Claims;
 namespace server.Controllers;
 
 [ApiController]
+[DisableRateLimiting]
 [Route("api/[controller]")]
 [Authorize]
 public class CartController : ControllerBase

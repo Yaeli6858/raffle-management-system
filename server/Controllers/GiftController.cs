@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.Mvc;
 using server.Services.Interfaces;
 using server.DTOs;
@@ -10,7 +11,7 @@ namespace server.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-
+[DisableRateLimiting]
 public class GiftController : ControllerBase
 {
     private readonly IGiftService _giftService;

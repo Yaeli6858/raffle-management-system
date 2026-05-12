@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.Mvc;
 using server.Services.Interfaces;
 using server.DTOs;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace server.Controllers;
 
 [ApiController]
+[DisableRateLimiting]
 [Route("api/[controller]")]
 public class CategoryController : ControllerBase
 {

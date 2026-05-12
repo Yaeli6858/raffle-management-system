@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.Mvc;
 using server.Services.Interfaces;
 using server.DTOs;
@@ -7,6 +8,7 @@ namespace server.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[DisableRateLimiting]
 public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
