@@ -13,19 +13,35 @@ services:
     volumes:
       - sqlserverdata:/var/opt/mssql
 
+  redis:
+    image: redis:7.0-alpine
+    container_name: raffle-redis
+    command:
+      - redis-server
+      - --requirepass
+      - "Devora!123"
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+    restart: unless-stopped
+
   server:
     build:
       context: ./server
       dockerfile: Dockerfile
     container_name: raffle-server
     ports:
-      - "5071:80"
+      - "5072:80"
     depends_on:
       - db
+      - redis
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
       ASPNETCORE_URLS: "http://+:80"
       ConnectionStrings__DefaultConnection: "Server=db,1433;Database=RaffleDb;User Id=sa;Password=YourStrong@Pass123;TrustServerCertificate=True"
+      Redis__Configuration: "redis:6379,password=Devora!123"
+      Cache__GiftCacheTtlSeconds: 300
     restart: unless-stopped
 
   client:
@@ -42,3 +58,5 @@ services:
 volumes:
   sqlserverdata:
     name: raffle-sqlserver-data
+  redisdata:
+    name: raffle-redis-data

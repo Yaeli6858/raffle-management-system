@@ -71,7 +71,7 @@ this.notificationService.confirmDelete(() => {
   get imageSrc(): string {
 
     return this.gift.imageUrl
-      ? `http://localhost:5071${this.gift.imageUrl}`
-      : 'http://localhost:5071/uploads/gifts/placeholder.jpg';
+      ? `http://localhost:5072${this.gift.imageUrl}`
+      : 'http://localhost:5072/uploads/gifts/placeholder.jpg';
   }
 }

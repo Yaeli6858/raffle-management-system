@@ -7,7 +7,7 @@ import { GiftPurchaseCountDto } from '../models/purchase-model';
 @Injectable({ providedIn: 'root' })
 export class GiftsService {
 
-  private readonly baseUrl = 'http://localhost:5071/api/Gift';
+  private readonly baseUrl = 'http://localhost:5072/api/Gift';
 
   constructor(private http: HttpClient) { }
 

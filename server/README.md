@@ -136,14 +136,14 @@ dotnet run
 ```
 
 The API will be available at:
-- HTTP: `http://localhost:5071`
+- HTTP: `http://localhost:5072`
 - HTTPS: `https://localhost:7033`
 
 ## 5. API Documentation
 Open the Swagger UI to explore and test all endpoints:
 
 ```
-http://localhost:5071/swagger
+http://localhost:5072/swagger
 ```
 ---
 

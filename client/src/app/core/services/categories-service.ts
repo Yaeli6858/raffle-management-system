@@ -7,7 +7,7 @@ import { GiftResponseDto } from '../models/gift-model';
 @Injectable({ providedIn: 'root' })
 export class CategoriesService {
 
-  private readonly baseUrl = 'http://localhost:5071/api/Category';
+  private readonly baseUrl = 'http://localhost:5072/api/Category';
 
   constructor(private http: HttpClient) {}
 

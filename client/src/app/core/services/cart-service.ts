@@ -14,7 +14,7 @@ import {
 @Injectable({ providedIn: 'root' })
 export class CartService {
 
-  private readonly baseUrl = 'http://localhost:5071/api/Cart';
+  private readonly baseUrl = 'http://localhost:5072/api/Cart';
 
   // Single source of truth
   private readonly _cart$ = new BehaviorSubject<CartItemResponseDto[]>([]);

@@ -9,7 +9,7 @@ import { RaffleStatusResponse } from '../models/winning-model';
 })
 export class WinningService {
 
-  private readonly baseUrl = 'http://localhost:5071/api/winning';
+  private readonly baseUrl = 'http://localhost:5072/api/winning';
 
   constructor(private http: HttpClient) {}
 

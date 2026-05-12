@@ -9,7 +9,7 @@ import { PurchaseResponseDto } from '../models/purchase-model';
 @Injectable({ providedIn: 'root' })
 export class PurchaseService {
 
-  private readonly baseUrl = 'http://localhost:5071/api/Purchase';
+  private readonly baseUrl = 'http://localhost:5072/api/Purchase';
 
   constructor(private http: HttpClient) {}
 

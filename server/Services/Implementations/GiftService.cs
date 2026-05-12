@@ -4,6 +4,9 @@ using server.Repositories.Interfaces;
 using server.Services.Interfaces;
 using server.DTOs;
 using AutoMapper;
+using System.Text.Json;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Configuration;
 
 namespace server.Services.Implementations;
 
@@ -11,31 +14,73 @@ public class GiftService : IGiftService
 {
     private readonly IGiftRepository _giftRepository;
     private readonly ILogger<GiftService> _logger;
-
     private readonly IMapper _mapper;
+    private readonly IDistributedCache _cache;
+    private readonly IConfiguration _config;
 
-    public GiftService(IGiftRepository giftRepository, ILogger<GiftService> logger, IMapper mapper)
+    public GiftService(IGiftRepository giftRepository, ILogger<GiftService> logger, IMapper mapper, IDistributedCache cache,
+    IConfiguration config)
     {
         _giftRepository = giftRepository;
         _logger = logger;
         _mapper = mapper;
+        _cache = cache;
+        _config = config;
     }
+    
 
-    public async Task<IEnumerable<GiftResponseDto>> GetAllGiftsAsync(
-     PriceSort sort,
-     int? categoryId,
-     int? donorId
-     )
+    // public async Task<IEnumerable<GiftResponseDto>> GetAllGiftsAsync(
+    //  PriceSort sort,
+    //  int? categoryId,
+    //  int? donorId
+    //  )
+    // {
+    //     var gifts = await _giftRepository.GetAllGiftsAsync(
+    //         categoryId,
+    //         donorId,
+    //         sort
+    //     );
+
+    //     return _mapper.Map<IEnumerable<GiftResponseDto>>(gifts);
+
+    // }
+
+
+public async Task<IEnumerable<GiftResponseDto>> GetAllGiftsAsync(
+    PriceSort sort,
+    int? categoryId,
+    int? donorId)
+{
+    var cacheKey = $"raffle:gifts:{sort}:{categoryId?.ToString() ?? "all"}:{donorId?.ToString() ?? "all"}";
+
+    var cachedJson = await _cache.GetStringAsync(cacheKey);
+    if (!string.IsNullOrEmpty(cachedJson))
     {
-        var gifts = await _giftRepository.GetAllGiftsAsync(
-            categoryId,
-            donorId,
-            sort
-        );
-
-        return _mapper.Map<IEnumerable<GiftResponseDto>>(gifts);
-
+        var cachedResult = JsonSerializer.Deserialize<IEnumerable<GiftResponseDto>>(cachedJson);
+        if (cachedResult != null)
+        {
+            return cachedResult;
+        }
     }
+
+    var gifts = await _giftRepository.GetAllGiftsAsync(
+        categoryId,
+        donorId,
+        sort);
+
+    var result = _mapper.Map<IEnumerable<GiftResponseDto>>(gifts);
+
+    var ttlSeconds = _config.GetValue<int?>("Cache:GiftCacheTtlSeconds") ?? 300;
+    var cacheOptions = new DistributedCacheEntryOptions
+    {
+        AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(ttlSeconds)
+    };
+
+    var payload = JsonSerializer.Serialize(result);
+    await _cache.SetStringAsync(cacheKey, payload, cacheOptions);
+
+    return result;
+}
 
 
 

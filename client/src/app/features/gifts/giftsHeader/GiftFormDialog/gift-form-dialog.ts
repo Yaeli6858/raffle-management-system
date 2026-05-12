@@ -72,7 +72,7 @@ export class GiftFormDialog implements OnChanges {
     console.log(gift.imageUrl, 'giftimageurl1');
         console.log(this.previewUrl, 'previewurl1');
 
-    this.previewUrl = gift.imageUrl ? `http://localhost:5071${gift.imageUrl}` : null;
+    this.previewUrl = gift.imageUrl ? `http://localhost:5072${gift.imageUrl}` : null;
     console.log(gift.imageUrl, 'giftimageurl2');
 
     console.log(this.previewUrl, 'previewurl2');

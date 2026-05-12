@@ -22,7 +22,7 @@ const roleMap: Record<string, 'User' | 'Admin' | 'Donor'> = {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private apiUrl = 'http://localhost:5071/api/auth';
+  private apiUrl = 'http://localhost:5072/api/auth';
 
   // סטייט ריאקטיבי של התחברות
   private loggedInSubject = new BehaviorSubject<boolean>(this.isTokenValid());
